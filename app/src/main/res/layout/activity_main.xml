@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".LoginActivity"
+    android:background="@color/navyBlue"
+    android:forceDarkAllowed="false">
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/fingerprintAnim"
+        android:layout_width="140dp"
+        android:layout_height="140dp"
+        app:lottie_rawRes="@raw/fingerprint"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="200dp" />
+
+    <TextView
+        android:id="@+id/txtSignIn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sign In with Touch ID"
+        android:textSize="22sp"
+        android:textColor="@color/peach"
+        android:clickable="true"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/fingerprintAnim"
+        android:layout_margin="18dp"
+        android:padding="8dp" />
+
+    <ImageView
+        android:id="@+id/imgLine"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/line"
+        android:layout_below="@+id/txtSignIn"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:id="@+id/txtOr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Create Account ?"
+        android:textSize="12sp"
+        android:layout_below="@+id/imgLine"
+        android:textColor="@color/peach"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="18dp" />
+
+    <RelativeLayout
+        android:id="@+id/btnSignUpLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtOr"
+        android:layout_centerHorizontal="true" >
+
+        <ImageView
+            android:id="@+id/btnSignUp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/loginwithphonebtn" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sign Up"
+            android:textColor="@color/navyBlue"
+            android:layout_centerInParent="true"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

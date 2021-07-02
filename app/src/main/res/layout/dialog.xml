@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/navyBlue">
+<EditText
+    android:id="@+id/txtName"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="20dp"
+    android:hint="Enter Username"
+    android:backgroundTint="#FFE6E2"
+    android:textColorHint="#FFE6E2"/>
+<Button
+    android:id="@+id/btnAddFriend"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="25dp"
+    android:text="ADD"
+    android:textColor="@color/navyBlue"
+    android:textSize="18sp"
+    android:background="@color/white"/>
+</LinearLayout>

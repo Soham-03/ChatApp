@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:id="@+id/mainRelative"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    android:background="@color/navyBlue"
+    android:forceDarkAllowed="false">
+
+    <RelativeLayout
+        android:id="@+id/viewForMenu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"/>
+
+    <TextView
+        android:id="@+id/txtMsgTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Messages"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:layout_margin="22dp" />
+
+    <ImageView
+        android:id="@+id/imgHamburger"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/hamburger"
+        android:layout_margin="20dp"
+        android:layout_alignParentRight="true"
+        android:padding="10dp"/>
+
+    <RelativeLayout
+        android:id="@+id/usersLayout"
+        android:layout_below="@+id/txtMsgTitle"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/rounded_rectangle">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/mainActivityRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="14dp" />
+
+        <ImageView
+            android:id="@+id/btnAdd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/btn_add"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:clickable="true"
+            android:layout_margin="22dp"
+            android:focusable="true" />
+
+    </RelativeLayout>
+
+</RelativeLayout>
