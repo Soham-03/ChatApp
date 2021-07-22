@@ -5,8 +5,8 @@
         android:height="400dp">
     </size>
     <corners
-        android:topRightRadius="50dp"
-        android:topLeftRadius="50dp"/>
+        android:topRightRadius="25dp"
+        android:topLeftRadius="25dp"/>
     <solid
         android:color="@color/light_peach"/>
 </shape>

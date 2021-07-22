@@ -1,61 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/navyBlue"
-    tools:context=".PhoneSignUpActivity">
+    tools:context=".activity.PhoneSignUpActivity">
 
-    <EditText
-        android:id="@+id/entName"
-        android:layout_width="340dp"
-        android:layout_height="64dp"
-        android:layout_centerHorizontal="true"
-        android:hint="Enter Name"
-        android:textColorHint="@color/peach"
-        android:textSize="20sp"
-        android:layout_marginTop="100dp"
-        android:backgroundTint="@color/peach"
-        android:inputType="textPersonName"
-        android:textColor="@color/white"/>
-
-    <EditText
-        android:id="@+id/entPhone"
-        android:layout_width="340dp"
-        android:layout_height="64dp"
-        android:layout_centerHorizontal="true"
-        android:hint="Enter Phone Number"
-        android:layout_below="@+id/entName"
-        android:textColorHint="@color/peach"
-        android:textSize="20sp"
-        android:backgroundTint="@color/peach"
-        android:inputType="textPersonName"
-        android:layout_margin="12dp"
-        android:textColor="@color/white" />
-
-    <RelativeLayout
-        android:id="@+id/btnVerifyLayout"
+    <ImageView
+        android:id="@+id/logo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/entPhone"
-        android:layout_marginTop="68dp"
-        android:layout_centerHorizontal="true" >
+        android:src="@drawable/logo"
+        android:layout_centerHorizontal="true"
+        android:padding="40dp"/>
 
-        <ImageView
-            android:id="@+id/btnVerify"
+    <RelativeLayout
+        android:id="@+id/layout1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="visible">
+
+        <EditText
+            android:id="@+id/entName"
+            android:layout_width="340dp"
+            android:layout_height="64dp"
+            android:layout_centerHorizontal="true"
+            android:hint="Enter Name"
+            android:textColorHint="@color/peach"
+            android:textSize="20sp"
+            android:background="@drawable/edit_text_border"
+            android:padding="10dp"
+            android:inputType="textPersonName"
+            android:textColor="@color/white"/>
+
+        <EditText
+            android:id="@+id/entPhone"
+            android:layout_width="340dp"
+            android:layout_height="64dp"
+            android:layout_centerHorizontal="true"
+            android:hint="Enter Phone Number"
+            android:padding="10dp"
+            android:layout_below="@+id/entName"
+            android:textColorHint="@color/peach"
+            android:textSize="20sp"
+            android:inputType="phone"
+            android:layout_marginTop="22dp"
+            android:textColor="@color/white"
+            android:background="@drawable/edit_text_border"/>
+
+        <RelativeLayout
+            android:id="@+id/btnVerifyLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/loginwithphonebtn" />
+            android:layout_below="@+id/entPhone"
+            android:layout_marginTop="44dp"
+            android:layout_centerHorizontal="true" >
 
-        <TextView
-            android:id="@+id/txtVerify"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Verify"
-            android:textColor="@color/navyBlue"
-            android:layout_centerInParent="true"
-            android:textSize="20sp" />
+            <ImageView
+                android:id="@+id/btnVerify"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/loginwithphonebtn" />
+
+            <TextView
+                android:id="@+id/txtVerify"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Verify"
+                android:textColor="@color/navyBlue"
+                android:layout_centerInParent="true"
+                android:textSize="20sp" />
+
+        </RelativeLayout>
 
     </RelativeLayout>
 
@@ -64,46 +83,174 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:lottie_rawRes="@raw/loading"
-        android:layout_below="@+id/btnVerifyLayout"
+        android:layout_centerInParent="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
-        app:lottie_loop="true" />
-
-    <EditText
-        android:id="@+id/entCode"
-        android:layout_width="340dp"
-        android:layout_height="64dp"
-        android:hint="Enter Verification Code"
-        android:textColorHint="@color/peach"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="68dp"
-        android:layout_below="@+id/btnVerifyLayout"
-        android:textSize="20sp"
-        android:backgroundTint="@color/peach"
-        android:textColor="@color/white"/>
+        app:lottie_loop="true"
+        android:visibility="gone" />
 
     <RelativeLayout
-        android:id="@+id/btnLoginLayout"
-        android:layout_width="wrap_content"
+        android:id="@+id/layout2"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/entCode"
-        android:layout_marginTop="68dp"
-        android:layout_centerHorizontal="true" >
-
-        <ImageView
-            android:id="@+id/btnlogin"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/loginwithphonebtn"
-            android:text="Login" />
+        android:layout_centerInParent="true"
+        android:visibility="gone">
 
         <TextView
+            android:id="@+id/txtCodeTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Log In"
-            android:textColor="@color/navyBlue"
-            android:layout_centerInParent="true"
-            android:textSize="20sp" />
+            android:text="Enter Verification Code"
+            android:textColor="@color/light_peach"
+            android:layout_centerHorizontal="true"
+            android:textSize="22sp"
+            android:layout_marginTop="22dp"/>
+
+        <RelativeLayout
+            android:id="@+id/codeLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txtCodeTitle"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="18dp">
+
+            <EditText
+                android:id="@+id/entCode1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint=""
+                android:maxLength="1"
+                android:textColorHint="@color/peach"
+                android:textSize="20sp"
+                android:background="@drawable/edit_code_bg"
+                android:textColor="@color/white"
+                android:layout_margin="5dp"
+                android:padding="10dp"
+                android:inputType="number" />
+
+            <EditText
+                android:id="@+id/entCode2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint=""
+                android:layout_toEndOf="@id/entCode1"
+                android:maxLength="1"
+                android:textColorHint="@color/peach"
+                android:textSize="20sp"
+                android:background="@drawable/edit_code_bg"
+                android:layout_margin="5dp"
+                android:padding="10dp"
+                android:textColor="@color/white"
+                android:inputType="number" />
+
+            <EditText
+                android:id="@+id/entCode3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint=""
+                android:layout_toEndOf="@id/entCode2"
+                android:maxLength="1"
+                android:textColorHint="@color/peach"
+                android:textSize="20sp"
+                android:background="@drawable/edit_code_bg"
+                android:layout_margin="5dp"
+                android:padding="10dp"
+                android:textColor="@color/white"
+                android:inputType="number" />
+
+            <EditText
+                android:id="@+id/entCode4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint=""
+                android:layout_toEndOf="@id/entCode3"
+                android:maxLength="1"
+                android:textColorHint="@color/peach"
+                android:textSize="20sp"
+                android:background="@drawable/edit_code_bg"
+                android:layout_margin="5dp"
+                android:padding="10dp"
+                android:textColor="@color/white"
+                android:inputType="number" />
+
+            <EditText
+                android:id="@+id/entCode5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint=""
+                android:layout_toEndOf="@id/entCode4"
+                android:maxLength="1"
+                android:textColorHint="@color/peach"
+                android:textSize="20sp"
+                android:background="@drawable/edit_code_bg"
+                android:layout_margin="5dp"
+                android:padding="10dp"
+                android:textColor="@color/white"
+                android:inputType="number" />
+
+            <EditText
+                android:id="@+id/entCode6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint=""
+                android:layout_toEndOf="@id/entCode5"
+                android:maxLength="1"
+                android:textColorHint="@color/peach"
+                android:textSize="20sp"
+                android:background="@drawable/edit_code_bg"
+                android:layout_margin="5dp"
+                android:padding="10dp"
+                android:textColor="@color/white"
+                android:inputType="number" />
+
+        </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/line"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/line"
+            android:layout_below="@+id/codeLayout"
+            android:layout_centerHorizontal="true" />
+
+        <EditText
+            android:id="@+id/edtSetUpPassword"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="set up a password"
+            android:textColorHint="@color/light_peach"
+            android:background="@drawable/edit_text_border"
+            android:layout_below="@+id/line"
+            android:layout_margin="18dp"
+            android:layout_centerHorizontal="true"
+            android:padding="10dp"
+            android:inputType="numberPassword"/>
+
+        <RelativeLayout
+            android:id="@+id/btnLoginLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/edtSetUpPassword"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="20dp">
+
+            <ImageView
+                android:id="@+id/btnlogin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/loginwithphonebtn"
+                android:text="Login" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Log In"
+                android:textColor="@color/navyBlue"
+                android:layout_centerInParent="true"
+                android:textSize="20sp" />
+
+        </RelativeLayout>
 
     </RelativeLayout>
+
 </RelativeLayout>

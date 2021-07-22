@@ -1,59 +1,47 @@
-package com.example.chatapp
+package com.example.chatapp.activity
 
 import android.app.KeyguardManager
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.hardware.biometrics.BiometricManager
 import android.hardware.biometrics.BiometricPrompt
-import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.CancellationSignal
-import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import com.airbnb.lottie.LottieAnimationView
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
+import com.example.chatapp.EnterPassword
+import com.example.chatapp.R
 import com.google.firebase.auth.FirebaseAuth
-import java.util.concurrent.Executor
+
 
 class LoginActivity : AppCompatActivity() {
     lateinit var txtSignIn: TextView
     lateinit var btnSignUp: ImageView
-    lateinit var executor: Executor
     lateinit var biometricPrompt: BiometricPrompt
-    lateinit var biometricManager: BiometricManager
-    lateinit var promptInfo: androidx.biometric.BiometricPrompt.PromptInfo
     lateinit var authenticationCallback: BiometricPrompt.AuthenticationCallback
     lateinit var cancellationSignal: CancellationSignal
-    lateinit var fingerprintAnim:LottieAnimationView
     lateinit var auth:FirebaseAuth
     lateinit var authStateListener: FirebaseAuth.AuthStateListener
-    var isLoggegIn:Boolean = false
+    lateinit var txtSignInWithPass : TextView
 
-    @RequiresApi(Build.VERSION_CODES.P)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         txtSignIn = findViewById(R.id.txtSignIn)
         btnSignUp = findViewById(R.id.btnSignUp)
-        fingerprintAnim = findViewById(R.id.fingerprintAnim)
+        txtSignInWithPass = findViewById(R.id.txtSignInWithPass)
         auth = FirebaseAuth.getInstance()
-//        txtSignIn.visibility = View.INVISIBLE
-//        if(!fingerprintAnim.isAnimating){
-//            txtSignIn.visibility = View.VISIBLE
-//            fingerprintAnim.playAnimation()
-//        }
-//        else{
-//            fingerprintAnim.pauseAnimation()
-//        }
         checkBiometricSupport()
         authStateListener = FirebaseAuth.AuthStateListener { p0 ->
             if(p0.currentUser == null){
-                val intent = Intent(this@LoginActivity,PhoneSignUpActivity::class.java)
+                val intent = Intent(this@LoginActivity, PhoneSignUpActivity::class.java)
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
                 startActivity(intent)
             }
@@ -63,7 +51,7 @@ class LoginActivity : AppCompatActivity() {
         authenticationCallback = object: BiometricPrompt.AuthenticationCallback(){
             override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult?) {
                 super.onAuthenticationSucceeded(result)
-                val intent = Intent(this@LoginActivity,MainActivity::class.java)
+                val intent = Intent(this@LoginActivity, MainActivity::class.java)
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
                 startActivity(intent)
             }
@@ -89,11 +77,29 @@ class LoginActivity : AppCompatActivity() {
                 .build()
             biometricPrompt.authenticate(getCancelSignal(),mainExecutor,authenticationCallback)
         }
+
+        txtSignInWithPass.setOnClickListener {
+            val fragment: Fragment = EnterPassword()
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.loginActivityLayout, fragment,fragment::class.java.simpleName)
+                .addToBackStack("EnterPassword")
+                .commit()
+        }
+
         btnSignUp.setOnClickListener {
-            val intent = Intent(this@LoginActivity,PhoneSignUpActivity::class.java)
+            val intent = Intent(this@LoginActivity, PhoneSignUpActivity::class.java)
             startActivity(intent)
         }
 
+    }
+
+    override fun onBackPressed() {
+        val mFragmentManager = this.supportFragmentManager
+        if (mFragmentManager.backStackEntryCount > 0){
+            mFragmentManager.popBackStackImmediate();
+        }
+        else
+            super.onBackPressed();
     }
 
     fun checkBiometricSupport(): Boolean {

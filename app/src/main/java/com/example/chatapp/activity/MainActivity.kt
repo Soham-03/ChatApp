@@ -1,52 +1,85 @@
-package com.example.chatapp
 
-import android.annotation.SuppressLint
+
+package com.example.chatapp.activity
+
 import android.app.Dialog
-import android.content.ContentValues.TAG
+import android.content.Context
 import android.content.Intent
-import android.content.res.Resources
-import android.graphics.Paint
+import android.graphics.Color
+import android.graphics.drawable.Animatable
 import android.graphics.drawable.ColorDrawable
-import androidx.appcompat.app.AppCompatActivity
+import android.media.Image
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+import android.net.NetworkInfo
+import android.os.Build
 import android.os.Bundle
 import android.text.TextUtils
-import android.util.Log
 import android.view.*
+import android.view.animation.Animation
 import android.widget.*
-import androidx.appcompat.app.AppCompatDelegate
-import androidx.core.content.res.ResourcesCompat
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.airbnb.lottie.LottieAnimationView
+import com.bumptech.glide.Glide
+import com.example.chatapp.R
+import com.example.chatapp.applic
 import com.example.chatapp.model.Friend
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.DocumentSnapshot
-import com.google.firebase.firestore.FieldValue
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.QueryDocumentSnapshot
+import com.google.firebase.firestore.*
+import com.google.firebase.firestore.EventListener
+import org.w3c.dom.Text
+import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.HashMap
-private lateinit var db: FirebaseFirestore
+
+lateinit var db: FirebaseFirestore
 private lateinit var uid: String
+lateinit var loadingLayout:RelativeLayout
+lateinit var loadingLottie:LottieAnimationView
 class MainActivity() : AppCompatActivity() {
     lateinit var btnAdd: ImageView
     lateinit var firebaseAuth: FirebaseAuth
-    lateinit var authListner: FirebaseAuth.AuthStateListener
     lateinit var hamburger:ImageView
+    lateinit var userNameFriend: String
     private lateinit var recyclerView: RecyclerView
     private lateinit var layoutManager: LinearLayoutManager
-    private lateinit var adapter: FirestoreRecyclerAdapter<Friend, FriendViewHolder>
+    lateinit var adapter: FirestoreRecyclerAdapter<Friend, FriendViewHolder>
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_users)
         firebaseAuth = FirebaseAuth.getInstance()
         db = FirebaseFirestore.getInstance()
+
         btnAdd = findViewById(R.id.btnAdd)
         hamburger = findViewById(R.id.imgHamburger)
+        loadingLayout = findViewById(R.id.loadingLayout)
+        loadingLottie = findViewById(R.id.loadingLottie)
+        loadingLottie.visibility = View.GONE
+        loadingLayout.visibility = View.GONE
+
+        if(!applic.isInternetAvailable(this)){
+            applic.noInternetDialog(this,"No Internet","You are not Connected to the Internet")
+        }
+
+        val currentUser = firebaseAuth.currentUser
+        uid = currentUser!!.uid
+        applic.online("true")
         val view = findViewById<RelativeLayout>(R.id.viewForMenu)
+        val token = getSharedPreferences("chat_app", MODE_PRIVATE)
+            .getString("fcm_token","").toString()
+        db.collection("user").document(uid).update("token",token)
+        db.collection("user").addSnapshotListener(object: EventListener<QuerySnapshot> {
+            override fun onEvent(value: QuerySnapshot?, error: FirebaseFirestoreException?) {
+                adapter.notifyDataSetChanged()
+            }
+        })
+
         hamburger.setOnClickListener {
             val popup = PopupMenu(this,view,Gravity.END)
             val inflater:MenuInflater = popup.menuInflater
@@ -71,10 +104,25 @@ class MainActivity() : AppCompatActivity() {
         }
         goMain()
     }
+
+    override fun onDestroy() {
+        applic.online("false")
+        println("Destroyed")
+        super.onDestroy()
+    }
+
+    override fun onPause() {
+        applic.online("false")
+        println("Paused")
+        super.onPause()
+    }
+
+    override fun onResume() {
+        applic.online("true")
+        println("Resumed")
+        super.onResume()
+    }
     private fun goMain() {
-        
-        val currentUser = firebaseAuth.currentUser
-        uid = currentUser!!.uid
 
         recyclerView = findViewById(R.id.mainActivityRecyclerView)
         layoutManager = LinearLayoutManager(this)
@@ -98,7 +146,7 @@ class MainActivity() : AppCompatActivity() {
             }
 
             override fun onBindViewHolder(holder: FriendViewHolder, position: Int, model: Friend) {
-                val userNameFriend = snapshots.getSnapshot(position).id
+                userNameFriend = snapshots.getSnapshot(position).id
                 holder.setList(userNameFriend)
                 holder.itemView.setOnClickListener {
                     println(holder.txtName.text)
@@ -123,7 +171,7 @@ class MainActivity() : AppCompatActivity() {
                 if (TextUtils.isEmpty(name)) {
                     userName.error = "Please Enter username"
                 } else {
-                    db.collection("user").whereEqualTo("name", name).get()
+                    db.collection("user").whereEqualTo("username", name).get()
                         .addOnSuccessListener {
                             if (it.isEmpty) {
                                 userName.setError("UserName not found")
@@ -140,16 +188,106 @@ class MainActivity() : AppCompatActivity() {
     }
     class FriendViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val view: View = itemView
-        lateinit var imgProfile: ImageView
+        val imgProfile :ImageView = view.findViewById(R.id.imgFriends)
         var txtName: TextView = view.findViewById(R.id.txtFriendsName)
+        var imgOnline: ImageView = view.findViewById(R.id.imgOnline)
+        val txtLastSeen:TextView = view.findViewById(R.id.txtLastSeen)
         fun setList(userNameFriend: String) {
             db.collection("user").document(userNameFriend).get().addOnCompleteListener {
                 if (it.isSuccessful) {
                     val docSnapShot = it.result
                     val name = docSnapShot!!.get("name")
                     txtName.text = name.toString()
+                    val profilePicture = docSnapShot.get("profilepicture",String::class.java)
+                    val lastSeenDate = docSnapShot.get("lastSeen",String::class.java)
+                    if(profilePicture != null){
+                        Glide.with(view)
+                            .load(profilePicture)
+                            .centerCrop()
+                            .into(imgProfile)
+                    }
+                    val isOnline = docSnapShot.get("online",String::class.java)
+                    if(isOnline == null){
+                        imgOnline.setImageResource(R.drawable.offline)
+                    }
+                    if(isOnline == "true"){
+                        imgOnline.setImageResource(R.drawable.online)
+                        txtLastSeen.text = ""
+                    }
+                    else{
+                        imgOnline.setImageResource(R.drawable.offline)
+                        val date = lastSeenDate?.dropLast(9)
+                        val singleDate = date?.drop(8)
+                        val year = date?.dropLast(6)
+                        val time = Calendar.getInstance().time
+                        val timeInString = SimpleDateFormat("yyyy/MM/dd",Locale.getDefault()).format(time)
+
+                        val myDate = Date(System.currentTimeMillis() - 1000 * 60 * 60 * 24)
+                        val dateFormat: DateFormat = SimpleDateFormat("dd")
+                        val yestr = dateFormat.format(myDate)
+                        val dropDate = lastSeenDate.toString().drop(11)
+                        var displayDate = dropDate.dropLast(3)
+                        val apOrPm = displayDate[0].toString()+ displayDate[1].toString()
+                        val gg = apOrPm.toInt()
+                        if(gg<12){
+                            displayDate = "$displayDate am"
+                        }
+                        else{
+                            displayDate = "$displayDate pm"
+                        }
+                        if(date == timeInString){
+                            txtLastSeen.text = "Last Seen Today at $displayDate"
+                        }
+                        else if(date?.drop(8) == yestr){
+                            txtLastSeen.text = "Last Seen Yesterday at $displayDate"
+                        }
+                        else{
+                            var month = "gg"
+                            when("${date!![5]}${date[6]}"){
+                                "01"->{
+                                    month = "January"
+                                }
+                                "02"->{
+                                    month = "February"
+                                }
+                                "03"->{
+                                    month = "March"
+                                }
+                                "04"->{
+                                    month = "April"
+                                }
+                                "05"->{
+                                    month = "June"
+                                }
+                                "06"->{
+                                    month = "July"
+                                }
+                                "07"->{
+                                    month = "October"
+                                }
+                                "08"->{
+                                    month = "November"
+                                }
+                                "09"->{
+                                    month = "December"
+                                }
+                                "10"->{
+                                    month = "February"
+                                }
+                                "11"->{
+                                    month = "February"
+                                }
+                                "12"->{
+                                    month = "February"
+                                }
+                            }
+                            txtLastSeen.text = ("Last Seen $singleDate $month $year")
+                        }
+                    }
                 }
             }
+            loadingLayout.visibility = View.GONE
+            loadingLottie.cancelAnimation()
         }
     }
 
@@ -189,7 +327,7 @@ class MainActivity() : AppCompatActivity() {
                                 //write on users friend data
                                 val dataUserFriend = HashMap<String, Any>()
                                 dataUserFriend.put("idChatRoom", uid + userNameFriend)
-                                db.collection("user").document(userNameFriend as String)
+                                db.collection("user").document(userNameFriend)
                                     .collection("friend").document(uid).set(dataUserFriend)
                                     .addOnSuccessListener {
                                         goChatRoom(uid + userNameFriend, userNameFriend)

@@ -5,74 +5,161 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ChatActivity"
+    tools:context=".activity.ChatActivity"
     android:background="@color/navyBlue">
 
     <ImageView
-        android:id="@+id/imgFriendsPfp"
+        android:id="@+id/btnBackChat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/btn_add"
-        android:layout_margin="8dp"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Friends Name"
-        android:textSize="20sp"
-        android:layout_margin="22dp"
-        android:layout_centerHorizontal="true" />
+        android:src="@drawable/back_btn"
+        android:layout_marginLeft="18dp"
+        android:layout_marginTop="10dp"
+        android:layout_alignParentStart="true" />
 
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/imgFriendsPfp"
-        android:background="#FFE6E2">
+        android:id="@+id/topLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/chatRecyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_above="@+id/layout"
-            android:layout_margin="8dp" />
-
-        <LinearLayout
-            android:id="@+id/layout"
+        <RelativeLayout
+            android:id="@+id/pfpLayout1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:weightSum="5"
-            android:layout_alignParentBottom="true"
-            android:orientation="horizontal"
-            android:layout_marginBottom="10dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp">
+            android:layout_margin="10dp"
+            android:layout_centerVertical="true">
 
-            <RelativeLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="4.2" >
+            <androidx.cardview.widget.CardView
+                android:id="@+id/friendsPfpCardView"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                app:cardCornerRadius="32dp"
+                android:elevation="10dp" >
 
-                <EditText
-                    android:id="@+id/edtMessage"
+                <ImageView
+                    android:id="@+id/imgFriendsPfp"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Enter Message"
-                    android:textColorHint="@color/black"
-                    android:backgroundTint="@color/navyBlue"
-                    android:inputType="textMultiLine"
-                    android:textColor="@color/black" />
+                    android:layout_height="match_parent"
+                    android:src="@drawable/friendspfp" />
 
-            </RelativeLayout>
+            </androidx.cardview.widget.CardView>
 
-            <ImageView
-                android:id="@+id/btnSendMsg"
-                android:layout_width="0dp"
+            <androidx.cardview.widget.CardView
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:layout_alignEnd="@+id/friendsPfpCardView"
+                android:layout_alignBottom="@+id/friendsPfpCardView"
+                app:cardCornerRadius="200dp">
+                <ImageView
+                    android:id="@+id/imgOnlineChatAct"
+                    android:layout_width="10dp"
+                    android:layout_height="10dp"
+                    android:src="@drawable/offline" />
+
+            </androidx.cardview.widget.CardView>
+
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/pfpLayout1">
+
+            <TextView
+                android:id="@+id/friendName"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.8"
-                android:src="@drawable/btn_send" />
+                android:text="Friends Name"
+                android:textSize="22sp"
+                android:textColor="@color/white"
+                android:layout_marginStart="22dp"
+                android:layout_margin="10dp"
+                android:textStyle="bold"/>
 
-        </LinearLayout>
+            <TextView
+                android:id="@+id/txtTyping"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Typing..."
+                android:layout_below="@+id/friendName"
+                android:layout_centerInParent="true"
+                android:textColor="@color/light_peach"
+                android:visibility="gone"/>
+
+        </RelativeLayout>
 
     </RelativeLayout>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/topLayout"
+        android:backgroundTint="@color/light_peach"
+        android:background="@drawable/rounded_rectangle"
+        app:cardCornerRadius="25dp">
+
+        <RelativeLayout
+            android:id="@+id/snackBar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/chatRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_above="@+id/layout"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="4dp"
+                android:layout_marginBottom="4dp"/>
+
+            <LinearLayout
+                android:id="@+id/layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:weightSum="5"
+                android:layout_alignParentBottom="true"
+                android:orientation="horizontal"
+                android:padding="4dp"
+                android:background="@drawable/edit_msg_border">
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="4.0" >
+
+                    <EditText
+                        android:id="@+id/edtMessage"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:hint="Enter Message"
+                        android:textColorHint="@color/black"
+                        android:inputType="textMultiLine"
+                        android:textColor="@color/black"
+                        android:backgroundTint="@color/navyBlue" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1.0">
+
+                    <ImageView
+                        android:id="@+id/btnSendMsg"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:padding="8dp"
+                        android:src="@drawable/btn_send" />
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+
 
 </RelativeLayout>

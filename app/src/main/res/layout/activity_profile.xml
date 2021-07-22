@@ -4,24 +4,106 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ProfileActivity"
+    tools:context=".activity.ProfileActivity"
     android:background="@color/navyBlue" >
 
     <ImageView
-        android:id="@+id/imgMyProfilePic"
+        android:id="@+id/btnBack"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:src="@drawable/btn_add"
-        android:layout_above="@+id/txtUserName"
-        android:layout_margin="10dp" />
+        android:src="@drawable/back_btn"
+        android:layout_margin="22dp"
+        android:layout_alignParentStart="true" />
 
     <TextView
-        android:id="@+id/txtUserName"
+        android:id="@+id/txtProfile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/white"
-        android:textSize="24sp"
-        android:text="name"
-        android:layout_centerInParent="true"/>
+        android:text="Profile"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:layout_margin="22dp"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/white"/>
+
+    <RelativeLayout
+        android:id="@+id/pfpLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/txtProfile">
+
+        <RelativeLayout
+            android:id="@+id/topLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="180dp"/>
+
+        <RelativeLayout
+            android:id="@+id/roundedRect"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/topLayout"
+            android:background="@drawable/rounded_rectangle" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/pfpCardview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="50dp"
+            android:layout_centerHorizontal="true">
+
+            <ImageView
+                android:id="@+id/imgMyProfilePic"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:src="@drawable/pfp"/>
+
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:id="@+id/txtName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Name"
+            android:layout_below="@+id/pfpCardview"
+            android:textSize="38sp"
+            android:textColor="#F68472"
+            android:textStyle="bold"
+            android:layout_centerHorizontal="true"/>
+
+        <TextView
+            android:id="@+id/txtUserName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="UserName"
+            android:textSize="18sp"
+            android:layout_below="@id/txtName"
+            android:layout_centerHorizontal="true"/>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txtUserName"
+            android:layout_centerHorizontal="true">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/phone_no"
+                android:padding="20dp"/>
+            <TextView
+                android:id="@+id/txtPhoneNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="phone number"
+                android:layout_centerInParent="true"
+                android:padding="10dp"
+                android:textSize="22sp"/>
+        </RelativeLayout>
+
+    </RelativeLayout>
+
 </RelativeLayout>

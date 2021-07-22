@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item
-        android:id="@+id/menuProfile"
-        android:title="Profile"/>
-    <item
-        android:id="@+id/menuLogout"
-        android:title="LogOut"/>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+        <item
+            android:id="@+id/menuProfile"
+            android:title="Profile"
+            android:icon="@drawable/profile"
+            app:showAsAction="never"/>
+        <item
+            android:id="@+id/menuLogout"
+            android:title="LogOut"
+            android:orderInCategory="100"
+            android:icon="@drawable/profile"
+            app:showAsAction="never"/>
 </menu>
